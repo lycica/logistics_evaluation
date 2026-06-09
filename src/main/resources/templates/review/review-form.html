@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${review.reviewId != null} ? '修改评价' : '发表评价'">评价表单</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+<h2 th:text="${review.reviewId != null} ? '修改评价' : '发表评价'"></h2>
+
+<div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
+
+<!-- 如果是新增，providerId 由后端传过来；如果是修改，绑定已有 review 对象 -->
+<th:block th:with="actionUrl=${review.reviewId != null} ? '/reviews/edit' : '/reviews/write'">
+    <form th:action="@{${actionUrl}}" method="post" enctype="multipart/form-data">
+        <!-- 修改时传递 reviewId 和 providerId，新增时只需 providerId -->
+        <input type="hidden" name="reviewId" th:value="${review?.reviewId}">
+        <input type="hidden" name="providerId" th:value="${providerId != null ? providerId : review?.providerId}">
+
+        <!-- 评分：四个滑块，0-100 -->
+        <!--name:表单提交时作为数据键名，后端通过该键获取对应值;id:表单唯一代表-->
+        <div class="row mb-3">
+            <div class="col-md-3">
+                <label for="timeliness">时效性</label>
+                <input type="number" class="form-control" name="timeliness" id="timeliness"
+                    th:value="${review?.timelinessScore}" min="0" max="100" required>
+            </div>
+            <div class="col-md-3">
+                <label for="attitude">服务态度</label>
+                <input type="number" class="form-control" name="attitude" id="attitude"
+                    th:value="${review?.attitudeScore}" min="0" max="100" required>
+            </div>
+            <div class="col-md-3">
+                <label for="integrity">包裹完好度</label>
+                <input type="number" class="form-control" name="integrity" id="integrity"
+                    th:value="${review?.integrityScore}" min="0" max="100" required>
+            </div>
+            <div class="col-md-3">
+                <label for="price">价格</label>
+                <input type="number" class="form-control" name="price" id="price"
+                    th:value="${review?.priceScore}" min="0" max="100" required>
+            </div>
+        </div>
+
+        <!-- 文字评论 -->
+        <div class="mb-3">
+            <label for="commentText">评论内容</label>
+            <textarea class="form-control" name="commentText" id="commentText" rows="3"
+                    th:text="${review?.commentText}"></textarea>
+        </div>
+
+        <!-- 图片上传 -->
+        <div class="mb-3">
+            <label>上传图片凭证（可选，最多5张）</label>
+            <input type="file" class="form-control" name="imageFiles" multiple accept="image/*">
+        </div>
+
+        <button type="submit" class="btn btn-primary">提交评价</button>
+        <a th:href="@{/reviews/my}" class="btn btn-secondary">返回我的评价</a>
+    </form>
+</th:block>
+</body>
+</html>

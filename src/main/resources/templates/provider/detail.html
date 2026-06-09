@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${provider.name} + ' - 详情'">服务商详情</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+<a th:href="@{/providers}" class="btn btn-secondary mb-3">← 返回列表</a>
+
+<h2 th:text="${provider.name}">服务商名称</h2>
+<p>联系方式：<span th:text="${provider.contact}">无</span></p>
+<p>综合评分：<span th:text="${provider.avgScore}">0.00</span>（<span th:text="${provider.reviewCount}">0</span>条评价）</p>
+
+<a th:href="@{/reviews/write/{id}(id=${provider.providerId})}" class="btn btn-success mb-4">✍️ 评价该服务商</a>
+<h4>最新评价</h4>
+<div th:if="${#lists.isEmpty(reviews)}" class="text-muted">暂无评价，快来发表第一条吧！</div>
+<div th:each="r : ${reviews}" class="card mb-2">
+    <div class="card-body">
+        <p>
+            时效性：<strong th:text="${r.timelinessScore}"></strong> |
+            态度：<strong th:text="${r.attitudeScore}"></strong> |
+            完好度：<strong th:text="${r.integrityScore}"></strong> |
+            价格：<strong th:text="${r.priceScore}"></strong>
+        </p>
+        <p th:if="${r.commentText}" th:text="${r.commentText}" class="text-secondary"></p>
+        <small>评价时间：<span th:text="${#temporals.format(r.createTime, 'yyyy-MM-dd HH:mm')}"></span></small>
+    </div>
+</div>
+</body>
+<button id="favoriteBtn" class="btn btn-outline-warning mb-4" th:data-provider-id="${provider.providerId}">
+    <span th:text="${isFavorite ? '★ 已收藏' : '☆ 收藏'}">☆ 收藏</span>
+</button>
+<!-- 页面底部加入 JS -->
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+<script>
+    document.getElementById('favoriteBtn').addEventListener('click', function() {
+        var providerId = this.dataset.providerId;
+        fetch('/providers/favorite/toggle', {   // 注意路径前缀 /providers
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: 'providerId=' + providerId
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    var span = this.querySelector('span');
+                    span.textContent = data.favorited ? '★ 已收藏' : '☆ 收藏';
+                } else {
+                    alert(data.message || '操作失败');
+                }
+            });
+    });
+</script>
+</html>

@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>物流评价系统 - 首页</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+<h1>📦 物流服务商评价系统</h1>
+<p th:if="${session.currentUser != null}">
+    欢迎，<strong th:text="${session.currentUser.username}"></strong>
+    （<span th:text="${session.currentUser.role}"></span>）
+    <a th:href="@{/user/logout}" class="btn btn-sm btn-danger">退出</a>
+</p>
+
+<!-- 普通用户功能卡片 -->
+<div th:if="${session.currentUser != null and session.currentUser.role == 'user'}" class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <a th:href="@{/rankings}" class="btn btn-outline-primary btn-lg w-100 py-4">
+            🏆 查看排行榜
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a th:href="@{/reviews/my}" class="btn btn-outline-success btn-lg w-100 py-4">
+            📝 我的评价
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a th:href="@{/user/favorites}" class="btn btn-outline-success btn-lg w-100 py-4">
+            ⭐ 我的收藏
+        </a>
+    </div>
+    <div class="col-md-4 mb-3">
+        <a th:href="@{/providers}" class="btn btn-outline-info btn-lg w-100 py-4">
+            🚚 浏览服务商
+        </a>
+    </div>
+</div>
+
+<!-- 管理员功能卡片（如果角色是 admin） -->
+<div th:if="${session.currentUser != null and session.currentUser.role == 'admin'}" class="row mt-4">
+    <div class="col-md-4 mb-3">
+        <a th:href="@{/admin/dashboard}" class="btn btn-outline-dark btn-lg w-100 py-4">
+            ⚙️ 管理控制台
+        </a>
+    </div>
+</div>
+
+<!-- 未登录提示 -->
+<div th:unless="${session.currentUser != null}" class="mt-4">
+    <a th:href="@{/user/login}" class="btn btn-primary btn-lg">请登录</a>
+    <a th:href="@{/user/register}" class="btn btn-outline-secondary btn-lg ms-2">注册新账号</a>
+</div>
+</body>
+</html>

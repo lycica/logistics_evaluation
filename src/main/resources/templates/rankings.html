@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>排行榜</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-4">
+<h1>🏆 物流服务商排行榜</h1>
+
+<!-- 导航标签 -->
+<ul class="nav nav-tabs" id="rankTab" role="tablist">
+    <li class="nav-item" role="presentation">
+        <button class="nav-link active" id="overall-tab" data-bs-toggle="tab" data-bs-target="#overall" type="button" role="tab">综合排行</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="timeliness-tab" data-bs-toggle="tab" data-bs-target="#timeliness" type="button" role="tab">速度最快</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="attitude-tab" data-bs-toggle="tab" data-bs-target="#attitude" type="button" role="tab">服务最好</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="integrity-tab" data-bs-toggle="tab" data-bs-target="#integrity" type="button" role="tab">最完好</button>
+    </li>
+    <li class="nav-item" role="presentation">
+        <button class="nav-link" id="price-tab" data-bs-toggle="tab" data-bs-target="#price" type="button" role="tab">性价比最高</button>
+    </li>
+</ul>
+
+<!-- 内容面板 -->
+<div class="tab-content mt-3" id="rankTabContent">
+    <!-- 综合排行 -->
+    <div class="tab-pane fade show active" id="overall" role="tabpanel">
+        <table class="table table-striped">
+            <thead><tr><th>排名</th><th>名称</th><th>综合评分</th><th>评价数</th></tr></thead>
+            <tbody>
+            <tr th:each="p,stat : ${overall}">
+                <td th:text="${stat.count}">1</td>
+                <td th:text="${p.name}">物流</td>
+                <td th:text="${p.avgScore}">0.00</td>
+                <td th:text="${p.reviewCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 速度最快 -->
+    <div class="tab-pane fade" id="timeliness" role="tabpanel">
+        <table class="table table-striped">
+            <thead><tr><th>排名</th><th>名称</th><th>时效性评分</th><th>评价数</th></tr></thead>
+            <tbody>
+            <tr th:each="item,stat : ${timelinessList}">
+                <td th:text="${stat.count}">1</td>
+                <td th:text="${item.name}">名称</td>
+                <td th:text="${item.score}">0</td>
+                <td th:text="${item.reviewCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 服务最好 -->
+    <div class="tab-pane fade" id="attitude" role="tabpanel">
+        <table class="table table-striped">
+            <thead><tr><th>排名</th><th>名称</th><th>服务态度评分</th><th>评价数</th></tr></thead>
+            <tbody>
+            <tr th:each="item,stat : ${attitudeList}">
+                <td th:text="${stat.count}">1</td>
+                <td th:text="${item.name}">名称</td>
+                <td th:text="${item.score}">0</td>
+                <td th:text="${item.reviewCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 最完好 -->
+    <div class="tab-pane fade" id="integrity" role="tabpanel">
+        <table class="table table-striped">
+            <thead><tr><th>排名</th><th>名称</th><th>完好度评分</th><th>评价数</th></tr></thead>
+            <tbody>
+            <tr th:each="item,stat : ${integrityList}">
+                <td th:text="${stat.count}">1</td>
+                <td th:text="${item.name}">名称</td>
+                <td th:text="${item.score}">0</td>
+                <td th:text="${item.reviewCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- 性价比最高 -->
+    <div class="tab-pane fade" id="price" role="tabpanel">
+        <table class="table table-striped">
+            <thead><tr><th>排名</th><th>名称</th><th>价格评分</th><th>评价数</th></tr></thead>
+            <tbody>
+            <tr th:each="item,stat : ${priceList}">
+                <td th:text="${stat.count}">1</td>
+                <td th:text="${item.name}">名称</td>
+                <td th:text="${item.score}">0</td>
+                <td th:text="${item.reviewCount}">0</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

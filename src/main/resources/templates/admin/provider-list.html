@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>服务商管理 - 物流评价系统</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+</head>
+<body class="container mt-4">
+<h2>🚚 物流服务商管理</h2>
+<div class="mb-3">
+    <a th:href="@{/admin/providers/add}" class="btn btn-success"><i class="bi bi-plus-circle"></i> 添加新服务商</a>
+    <a th:href="@{/admin/dashboard}" class="btn btn-secondary">返回控制台</a>
+</div>
+
+<!-- 操作提示 -->
+<div th:if="${message}" class="alert alert-success alert-dismissible fade show" role="alert">
+    <span th:text="${message}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+<div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+    <span th:text="${error}"></span>
+    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+</div>
+
+<!-- 表格 -->
+<table class="table table-bordered table-hover">
+    <thead class="table-dark">
+    <tr>
+        <th>编号</th>
+        <th>服务商名称</th>
+        <th>联系方式</th>
+        <th>综合评分</th>
+        <th>评价数</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="p : ${providers}">
+        <td th:text="${p.providerId}">1</td>
+        <td th:text="${p.name}">某物流</td>
+        <td th:text="${p.contact}">010-123456</td>
+        <td th:text="${p.avgScore}">0.00</td>
+        <td th:text="${p.reviewCount}">0</td>
+        <td>
+            <a th:href="@{/admin/providers/edit/{id}(id=${p.providerId})}" class="btn btn-sm btn-warning"><i class="bi bi-pencil-square"></i> 修改</a>
+            <a th:href="@{/admin/providers/delete/{id}(id=${p.providerId})}" class="btn btn-sm btn-danger" onclick="return confirm('确定要删除该服务商吗？如果已有评价记录，可能无法删除。')"><i class="bi bi-trash"></i> 删除</a>
+        </td>
+    </tr>
+    <tr th:if="${providers == null || providers.isEmpty()}">
+        <td colspan="6" class="text-center">暂无服务商数据</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

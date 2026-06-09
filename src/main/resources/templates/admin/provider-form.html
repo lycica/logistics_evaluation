@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${isEdit} ? '修改服务商' : '添加服务商'">服务商表单</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="container mt-5">
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 th:text="${isEdit} ? '修改服务商信息' : '添加新服务商'"></h4>
+            </div>
+            <div class="card-body">
+                <form th:action="@{/admin/providers/save}" method="post" th:object="${provider}">
+                    <!-- 隐藏域：编辑时携带原ID -->
+                    <input type="hidden" th:field="*{providerId}" th:if="${isEdit}">
+                    <input type="hidden" name="isEdit" th:value="${isEdit}">
+
+                    <!-- 名称 -->
+                    <div class="mb-3">
+                        <label for="name" class="form-label">服务商名称 <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="name" name="name"
+                               th:field="*{name}" placeholder="请输入服务商名称" required>
+                        <div th:if="${#fields.hasErrors('name')}" class="text-danger small" th:errors="*{name}"></div>
+                    </div>
+
+                    <!-- 联系方式 -->
+                    <div class="mb-3">
+                        <label for="contact" class="form-label">联系方式</label>
+                        <input type="text" class="form-control" id="contact" name="contact"
+                               th:field="*{contact}" placeholder="电话 / 邮箱 / 地址">
+                    </div>
+
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a th:href="@{/admin/providers}" class="btn btn-secondary me-md-2">取消</a>
+                        <button type="submit" class="btn btn-primary">保存</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
