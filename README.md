@@ -131,8 +131,8 @@ CREATE DATABASE logistics_eval DEFAULT CHARACTER SET utf8mb4;
 spring:
   datasource:
     url: jdbc:mysql://localhost:3306/logistics_eval?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Shanghai&characterEncoding=utf8
-    username: root
-    password: 123456
+    username: 你的用户名
+    password: 你的密码
 ```
 
 ### 3. 启动应用
